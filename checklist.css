@@ -1,0 +1,66 @@
+.input-agenda-item{
+  position: fixed;
+  bottom: 0px;
+  width:80%;
+  height:30pt;
+  border-radius: 2pt;
+  margin-bottom: 5pt;
+  margin-left: 10pt;
+  outline: none;
+  border: 1.5pt solid #bbaaff;
+  font-size: 20pt;
+  font-family: helvetica;
+}
+.button{
+  position: fixed;
+  left:83%;
+  bottom: 0px;
+  margin-bottom: 5pt;
+  height:35pt;
+  width:10%;
+  background-color: #000000;
+  border-radius: 2pt;
+  outline: none;
+  font-family: helvetica;
+  color:#ffffff;
+  text-align: center;
+  font-size: 30pt;
+}
+.container-list-item{
+  font-family: helvetica;
+  font-weight: bold;
+  font-size:15pt;
+  border-bottom: 2pt solid black;
+  width:80%;
+}
+.container-scrollbox{
+  width:100%;
+  height: 90%;
+  overflow-y: scroll;
+
+}
+.button-check{
+  position: relative;
+  float: left;
+  height: 20pt;
+  width:20pt;
+  border: 2pt solid black;
+  border-radius: 4pt;
+  margin-right: 10pt;
+}
+.checked{
+  background-color:#000000;
+}
+.widget-x{
+  position: relative;
+  height: 15pt;
+  width:15pt;
+  background-image: url("x-widget-02.png");
+  background-size: 100% 100%;
+  background-position: 50% 50%;
+  margin-top:-32pt;
+  float: right;
+}
+.text-checked{
+  text-decoration: line-through;
+}
