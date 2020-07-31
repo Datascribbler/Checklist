@@ -6,6 +6,16 @@
     font-family: "Helvetica-extended";
     src: url("HelveticaNeueLTStd-BdEx.otf");
 }
+@font-face {
+    font-family: "Helvetica-bold";
+    src: url("HelveticaNeueLTStd-Bd.otf");
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("HelveticaNeueLTStd-Roman.otf");
+}
+
+
 .input-agenda-item{
   position: absolute;
   bottom: 0px;
@@ -17,7 +27,7 @@
   outline: none;
   border: 1.5pt solid #bbaaff;
   font-size: 20pt;
-  font-family: helvetica;
+  font-family: "Helvetica";
 }
 .button{
   position: absolute;
@@ -29,7 +39,7 @@
   background-color: #000000;
   border-radius: 2pt;
   outline: none;
-  font-family: helvetica;
+  font-family: Helvetica;
   color:#ffffff;
   text-align: center;
   font-size: 30pt;
@@ -40,15 +50,15 @@
   width:100%;
 }
 .container-list-item{
-  font-family: helvetica;
-  font-weight: bold;
+  font-family: Helvetica-bold;
   font-size:15pt;
   border-bottom: 2pt solid black;
   width:calc(100% - 185pt);
 }
 .container-scrollbox{
+  margin-top: 50pt;
   width:100%;
-  height: 90%;
+  height: calc(100vh - 50pt);
   overflow-y: scroll;
 
 }
@@ -76,6 +86,10 @@
 }
 .text-checked{
   text-decoration: line-through;
+}
+.spacer{
+  width:100%;
+  height:100pt;
 }
 
 .container-calendar{

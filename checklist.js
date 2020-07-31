@@ -2,77 +2,68 @@ $(document).ready(function(){
 
   var listdata;
 
-  var calendar = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-  var calendar_location = "list.json";
-
-  function convertMonths(month,year){
-    let months = [31,28,31,30,31,30,31,31,30,31,30,31];
-    if(year%4 == 0){
-        months[1]=29;
-    }else{}
-    // leap year case
-    var accumulation = months.slice(0,month);
-    var sum = accumulation.reduce(function(a,b){ return a+b; },0);
-
-
-
-    return sum;
-  }
-
-  function convertToMonths(days,year){
-    let months = [31,28,31,30,31,30,31,31,30,31,30,31];
-    var month = 0;
-
-    if(year%4 == 0){
-        months[1] = 29;
-    }else{}
-    // leap year case
-
-    for(let i = 0; i < months.length; i++){
-      if(days > months[i]){
-        month++;
-        days -= months[i];
+  var calendar = {
+    structure:[{month:"JAN",days:31},{month:"FEB",days:28},{month:"MAR",days:31},{month:"APR",days:30},{month:"MAY",days:31},{month:"JUN",days:30},{month:"JUL",days:31},{month:"AUG",days:31},{month:"SEP",days:30},{month:"OCT",days:31},{month:"NOV",days:30},{month:"DEC",days:31}],
+    index:{month:0,day:1,year:2020},
+    leap:function(){
+      if(this.index.year%4 === 0){
+        this.structure[1].days = 29;
       }
       else{
-        return {month:month + 1, date:days };
+        this.structure[1].days = 28;
       }
+    },
+    load:function(d,m,y){
+      this.index.day = d;
+      this.index.month = m;
+      this.index.year = y;
+      this.update_location();
+    },
+    increment:function(int){
+      this.index.day += int;
+
+      if(this.index.day>this.structure[this.index.month].days){
+
+        if(this.index.month >= 11){
+          this.index.year++;
+          this.leap();
+        }
+        this.index.month = (this.index.month + 1) % 12;
+        this.index.day = 1;
+
+      }
+
+      else if(this.index.day <= 0){
+
+        if(this.index.month === 0){
+          this.index.year--;
+          this.leap();
+        }
+        this.index.month = (12 + (this.index.month - 1)) % 12;
+        this.index.day = this.structure[this.index.month].days;
+
+      }
+      else{}
+
+      this.render();
+      this.update_location();
+    },
+    render:function(){
+      document.getElementById("year").innerHTML = this.index.year;
+      document.getElementById("month").innerHTML = this.structure[this.index.month].month;
+      document.getElementById("day").innerHTML = convertToDoubleDigit(this.index.day);
+    },
+    location:"0-1-2020",
+    update_location:function(){
+      this.location = this.index.day+"-"+(this.index.month+1)+"-"+this.index.year+".json";
+      console.log(this.location);
     }
-  }
+  };
 
-  function convertToDate(days){
-    var dateobj = {};
+  var d = new Date();
 
-      dateobj.year = Math.floor(days / 365.25);
-      var remainingdays = (days) - Math.floor(dateobj.year * 365.25);
-
-      if(dateobj.year % 4 === 0){
-        remainingdays+=1;
-      }
-
-      console.log("remainingdays: " + remainingdays);
-      dateobj.month = Math.floor(convertToMonths(remainingdays,dateobj.year).month);
-      dateobj.date = Math.floor(convertToMonths(remainingdays,dateobj.year).date);
-
-      return dateobj
-
-  }
-
-  function getDate(d,m,y){
-
-    return convertMonths(m,y) + d
-    + Math.floor(y*365.25);
-  }
-
-  function renderDate(num){
-    var output = convertToDate(num);
-
-    calendar_location = output.date+"-"+(output.month+1)+"-"+output.year+".json";
-    console.log(output);
-    document.getElementById("year").innerHTML = output.year;
-    document.getElementById("month").innerHTML = calendar[output.month-1];
-    document.getElementById("day").innerHTML = convertToDoubleDigit(output.date);
-  }
+  calendar.load(d.getDate(),d.getMonth()+1,d.getFullYear());
+  calendar.render();
 
   function convertToDoubleDigit(num){
     if(num<10){
@@ -82,14 +73,6 @@ $(document).ready(function(){
       return num;
     }
   }
-
-  var d = new Date();
-  var dateindex = getDate(d.getDate(),d.getMonth(),d.getFullYear());
-  // var dateindex = getDate(1,0,2019);
-
-
-  renderDate(dateindex);
-
 
   function render(arr, targ){
     for(let i = 0; i < arr.length; i++){
@@ -136,6 +119,9 @@ $(document).ready(function(){
       listobj.appendChild(x);
       targ.appendChild(listobj);
     }
+    var spacer = document.createElement("DIV");
+    spacer.className = "spacer";
+    targ.appendChild(spacer);
   }
   function clear(targ){
     targ.innerHTML = "";
@@ -153,7 +139,7 @@ $(document).ready(function(){
     };
 
     upreq.open("POST","Saver.php","true");
-    upreq.setRequestHeader("URL",calendar_location);
+    upreq.setRequestHeader("URL",calendar.location);
     upreq.setRequestHeader("CONTENT",JSON.stringify(listdata));
     upreq.send();
   }
@@ -169,7 +155,7 @@ $(document).ready(function(){
       }
     };
     listreq.open("POST", "Getter.php", "true");
-    listreq.setRequestHeader("URL",calendar_location,true);
+    listreq.setRequestHeader("URL",calendar.location,true);
     listreq.send();
   }
 
@@ -187,14 +173,12 @@ $(document).ready(function(){
   });
 
   $("#arrowl").click(function(){
-    dateindex--;
-    renderDate(dateindex);
+    calendar.increment(-1);
     loadData(document.getElementsByClassName("container-scrollbox")[0]);
   });
 
   $("#arrowr").click(function(){
-    dateindex++;
-    renderDate(dateindex);
+    calendar.increment(1);
     loadData(document.getElementsByClassName("container-scrollbox")[0]);
   });
 });
