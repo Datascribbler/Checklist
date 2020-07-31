@@ -138,6 +138,9 @@
 }
 #display-number{
   position: absolute;
-  margin-left: 30pt;
+  height: 100%;
+  width:100%;
+  text-align: center;
+  /* margin-left: 30pt; */
   margin-top: 45pt;
 }
