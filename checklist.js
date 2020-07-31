@@ -1,5 +1,34 @@
 $(document).ready(function(){
 
+  var angle = {current:0, lock:70}
+
+  let sketch = function(p) {
+    p.setup = function(){
+      p.createCanvas(170, 170);
+      p.background(255);
+    }
+    p.draw = function(){
+      if(angle.current<angle.lock){
+        angle.current++;
+        document.getElementById("display-number").innerHTML = angle.current + "%";
+      }
+      else if(angle.current>angle.lock){
+        angle.current--;
+        document.getElementById("display-number").innerHTML = angle.current + "%";
+      }
+      p.smooth();
+      p.background(255);
+      p.circle(p.width/2,p.height/2,160);
+      p.fill(0);
+      p.arc(p.width/2,p.height/2,160,160,-6.28319/4,6.28319*(angle.current/100)-6.28319/4);
+      p.fill(255);
+      p.circle(p.width/2,p.height/2, 120);
+
+
+    }
+  };
+  new p5(sketch, 'display');
+
   var listdata;
 
   var calendar = {
@@ -61,7 +90,6 @@ $(document).ready(function(){
   };
 
   var d = new Date();
-
   calendar.load(d.getDate(),d.getMonth()+1,d.getFullYear());
   calendar.render();
 
@@ -74,7 +102,11 @@ $(document).ready(function(){
     }
   }
 
+
+
   function render(arr, targ){
+    var checkedcount = 0;
+
     for(let i = 0; i < arr.length; i++){
       var listobj = document.createElement("DIV");
       listobj.className = "container-list-item";
@@ -91,6 +123,7 @@ $(document).ready(function(){
       if(arr[i].checked === true){
         listcheck.className += " checked";
         label.className = "text-checked";
+        checkedcount++;
       }
       else{}
 
@@ -122,6 +155,8 @@ $(document).ready(function(){
     var spacer = document.createElement("DIV");
     spacer.className = "spacer";
     targ.appendChild(spacer);
+
+    return Math.floor(100*(checkedcount/arr.length));
   }
   function clear(targ){
     targ.innerHTML = "";
@@ -134,7 +169,7 @@ $(document).ready(function(){
         clear(document.getElementsByClassName("container-scrollbox")[0]);
         console.log(this.responseText);
         listdata = JSON.parse(this.responseText);
-        render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
+        angle.lock = render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
       }
     };
 
@@ -151,7 +186,7 @@ $(document).ready(function(){
       if(this.status == 200 && this.readyState == 4){
         listdata = JSON.parse(this.responseText);
         console.log(listdata);
-        render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
+        angle.lock = render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
       }
     };
     listreq.open("POST", "Getter.php", "true");

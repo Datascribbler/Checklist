@@ -128,3 +128,16 @@
 #arrowr{
   margin-left: 111pt;
 }
+
+#display{
+  position: fixed;
+  right: 35pt;
+  bottom:100pt;
+  font-family: Helvetica-condensed;
+  font-size: 40pt;
+}
+#display-number{
+  position: absolute;
+  margin-left: 30pt;
+  margin-top: 45pt;
+}
