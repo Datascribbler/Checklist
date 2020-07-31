@@ -1,10 +1,11 @@
 <?php
 
 $HEADERS = apache_request_headers();
+$path = "calendar/" . $HEADERS['URL'];
 
-if(file_exists($HEADERS['URL'])){
-  $mylist = fopen($HEADERS['URL'],"r");
-  $response = fread($mylist,filesize($HEADERS['URL']));
+if(file_exists($path)){
+  $mylist = fopen($path,"r");
+  $response = fread($mylist,filesize($path));
   echo $response;
   fclose($mylist);
 }
