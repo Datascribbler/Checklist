@@ -85,9 +85,11 @@
   font-size: 50pt;
 }
 .date{
-  margin-top: -3.9em;
+  margin-top: -4em;
   font-family: Helvetica-extended;
-  font-size: 24pt;
+  font-size: 23pt;
+  text-align: center;
+  margin-left: -29pt;
 }
 .arrow{
   height: 20pt;

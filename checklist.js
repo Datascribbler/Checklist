@@ -4,12 +4,14 @@ $(document).ready(function(){
 
   var calendar = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
+  var calendar_location = "list.json";
+
   function convertMonths(month,year){
-    var months = [31,28,31,30,31,30,31,31,30,31,30,31];
-    if((year-2000)%4 === 0){
-        months[1]+=1;
+    let months = [31,28,31,30,31,30,31,31,30,31,30,31];
+    if(year%4 == 0){
+        months[1]=29;
     }else{}
-    //leap year case
+    // leap year case
     var accumulation = months.slice(0,month);
     var sum = accumulation.reduce(function(a,b){ return a+b; },0);
 
@@ -19,13 +21,13 @@ $(document).ready(function(){
   }
 
   function convertToMonths(days,year){
-    var months = [31,28,31,30,31,30,31,31,30,31,30,31];
+    let months = [31,28,31,30,31,30,31,31,30,31,30,31];
     var month = 0;
 
-    if(month >=2 && (year-2000)%4 === 0){
-        months[1] += 1;
+    if(year%4 == 0){
+        months[1] = 29;
     }else{}
-    //leap year case
+    // leap year case
 
     for(let i = 0; i < months.length; i++){
       if(days > months[i]){
@@ -33,7 +35,7 @@ $(document).ready(function(){
         days -= months[i];
       }
       else{
-        return {month:month + 1, date:days};
+        return {month:month + 1, date:days };
       }
     }
   }
@@ -42,31 +44,50 @@ $(document).ready(function(){
     var dateobj = {};
 
       dateobj.year = Math.floor(days / 365.25);
+      var remainingdays = (days) - Math.floor(dateobj.year * 365.25);
 
+      if(dateobj.year % 4 === 0){
+        remainingdays+=1;
+      }
 
-      dateobj.month = Math.floor(convertToMonths(days % 365.25).month);
-      dateobj.date = Math.floor(convertToMonths(days % 365.25).date);
+      console.log("remainingdays: " + remainingdays);
+      dateobj.month = Math.floor(convertToMonths(remainingdays,dateobj.year).month);
+      dateobj.date = Math.floor(convertToMonths(remainingdays,dateobj.year).date);
 
       return dateobj
 
   }
 
-  function getDate(){
-    var d = new Date();
-    return convertMonths(d.getMonth()) + d.getDate()
-    + Math.floor(d.getFullYear()*365.25);
-  }
+  function getDate(d,m,y){
 
-  var dateindex = getDate();
+    return convertMonths(m,y) + d
+    + Math.floor(y*365.25);
+  }
 
   function renderDate(num){
     var output = convertToDate(num);
 
+    calendar_location = output.date+"-"+(output.month+1)+"-"+output.year+".json";
     console.log(output);
     document.getElementById("year").innerHTML = output.year;
     document.getElementById("month").innerHTML = calendar[output.month-1];
-    document.getElementById("day").innerHTML = output.date;
+    document.getElementById("day").innerHTML = convertToDoubleDigit(output.date);
   }
+
+  function convertToDoubleDigit(num){
+    if(num<10){
+      return "0"+num;
+    }
+    else{
+      return num;
+    }
+  }
+
+  var d = new Date();
+  var dateindex = getDate(d.getDate(),d.getMonth(),d.getFullYear());
+  // var dateindex = getDate(1,0,2019);
+
+
   renderDate(dateindex);
 
 
@@ -132,20 +153,27 @@ $(document).ready(function(){
     };
 
     upreq.open("POST","Saver.php","true");
+    upreq.setRequestHeader("URL",calendar_location);
     upreq.setRequestHeader("CONTENT",JSON.stringify(listdata));
     upreq.send();
   }
+  function loadData(targ){
+    clear(document.getElementsByClassName("container-scrollbox")[0]);
 
-  var listreq = new XMLHttpRequest();
-  listreq.onreadystatechange = function(){
-    if(this.status == 200 && this.readyState == 4){
-      listdata = JSON.parse(this.responseText);
-      console.log(listdata);
-      render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
-    }
-  };
-  listreq.open("POST", "list.json", "true");
-  listreq.send();
+    var listreq = new XMLHttpRequest();
+    listreq.onreadystatechange = function(){
+      if(this.status == 200 && this.readyState == 4){
+        listdata = JSON.parse(this.responseText);
+        console.log(listdata);
+        render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
+      }
+    };
+    listreq.open("POST", "Getter.php", "true");
+    listreq.setRequestHeader("URL",calendar_location,true);
+    listreq.send();
+  }
+
+  loadData();
 
   $(".button").click(function(){
     var newobj = {
@@ -161,10 +189,12 @@ $(document).ready(function(){
   $("#arrowl").click(function(){
     dateindex--;
     renderDate(dateindex);
+    loadData(document.getElementsByClassName("container-scrollbox")[0]);
   });
 
   $("#arrowr").click(function(){
     dateindex++;
     renderDate(dateindex);
+    loadData(document.getElementsByClassName("container-scrollbox")[0]);
   });
 });
