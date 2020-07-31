@@ -7,9 +7,9 @@
     src: url("HelveticaNeueLTStd-BdEx.otf");
 }
 .input-agenda-item{
-  position: fixed;
+  position: absolute;
   bottom: 0px;
-  width:80%;
+  width:calc(100% - 210pt);
   height:30pt;
   border-radius: 2pt;
   margin-bottom: 5pt;
@@ -20,12 +20,12 @@
   font-family: helvetica;
 }
 .button{
-  position: fixed;
-  left:83%;
+  position: absolute;
+  left:calc(100% - 180pt);;
   bottom: 0px;
   margin-bottom: 5pt;
   height:35pt;
-  width:10%;
+  width:110pt;
   background-color: #000000;
   border-radius: 2pt;
   outline: none;
@@ -34,12 +34,17 @@
   text-align: center;
   font-size: 30pt;
 }
+.widget-input{
+  position: fixed;
+  bottom:0pt;
+  width:100%;
+}
 .container-list-item{
   font-family: helvetica;
   font-weight: bold;
   font-size:15pt;
   border-bottom: 2pt solid black;
-  width:80%;
+  width:calc(100% - 185pt);
 }
 .container-scrollbox{
   width:100%;
@@ -101,6 +106,7 @@
   float: left;
   margin-top: -50pt;
 }
+
 #arrowl{
   -webkit-transform:rotate(180deg);
   margin-left: -25pt;
