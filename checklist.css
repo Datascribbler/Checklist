@@ -34,7 +34,7 @@
   left:calc(100% - 180pt);;
   bottom: 0px;
   margin-bottom: 5pt;
-  height:35pt;
+  height:33pt;
   width:110pt;
   background-color: #000000;
   border-radius: 2pt;
@@ -43,6 +43,7 @@
   color:#ffffff;
   text-align: center;
   font-size: 30pt;
+  padding-top: 2pt;
 }
 .widget-input{
   position: fixed;
@@ -74,6 +75,9 @@
 .checked{
   background-color:#000000;
 }
+.disabled{
+  opacity: .3;
+}
 .widget-x{
   position: relative;
   height: 15pt;
@@ -81,7 +85,7 @@
   background-image: url("x-widget-02.png");
   background-size: 100% 100%;
   background-position: 50% 50%;
-  margin-top:-32pt;
+  margin-top:0pt;
   float: right;
 }
 .text-checked{

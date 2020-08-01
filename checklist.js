@@ -46,7 +46,7 @@ $(document).ready(function(){
       this.render = function(){
         document.getElementById("year").innerHTML = this.selected.getFullYear();
         document.getElementById("month").innerHTML = this.datedict[this.selected.getMonth()];
-        document.getElementById("day").innerHTML = this.selected.getDate();
+        document.getElementById("day").innerHTML = convertToDoubleDigit(this.selected.getDate());
         this.location = this.selected.getDate()+"-"+this.selected.getMonth()+"-"+this.selected.getFullYear()+".json";
       };
 
@@ -91,33 +91,45 @@ $(document).ready(function(){
       else{}
 
 
-      var x = document.createElement("DIV");
-      x.className = "widget-x";
+      if(cal.selected.getTime()>=cal.current.getTime()){
 
-      listcheck.onclick = function(){
+        listcheck.onclick = function(){
 
-        if(this.className === "button-check"){
-          this.className += " checked";
-          arr[i].checked = true;
-        }
-        else{
-          this.className = "button-check";
-          arr[i].checked = false;
-        }
-        updateData(listdata);
+          if(this.className === "button-check"){
+            this.className += " checked";
+            arr[i].checked = true;
+          }
+          else{
+            this.className = "button-check";
+            arr[i].checked = false;
+          }
+          updateData(listdata);
 
-      };
+        };
 
-      x.onclick = function(){
-        arr.splice(i,1);
-        updateData(listdata);
-      };
+        var x = document.createElement("DIV");
+        x.className = "widget-x";
 
-      listobj.appendChild(listcheck);
-      listobj.appendChild(label);
-      listobj.appendChild(x);
-      targ.appendChild(listobj);
+        x.onclick = function(){
+          arr.splice(i,1);
+          updateData(listdata);
+        };
+        listobj.appendChild(x);
+
+        document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
     }
+    else{
+      listcheck.className += " disabled";
+      document.getElementsByClassName("button")[0].className += " disabled";
+    }
+
+    listobj.appendChild(listcheck);
+    listobj.appendChild(label);
+
+    targ.appendChild(listobj);
+
+    }
+
     var spacer = document.createElement("DIV");
     spacer.className = "spacer";
     targ.appendChild(spacer);
