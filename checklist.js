@@ -47,6 +47,14 @@ $(document).ready(function(){
         document.getElementById("year").innerHTML = this.selected.getFullYear();
         document.getElementById("month").innerHTML = this.datedict[this.selected.getMonth()];
         document.getElementById("day").innerHTML = convertToDoubleDigit(this.selected.getDate());
+
+        if(cal.selected.getTime()>=cal.current.getTime()){
+          document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
+        }
+        else{
+          document.getElementsByClassName("button")[0].className += " disabled";
+        }
+
         this.location = this.selected.getDate()+"-"+this.selected.getMonth()+"-"+this.selected.getFullYear()+".json";
       };
 
@@ -116,11 +124,11 @@ $(document).ready(function(){
         };
         listobj.appendChild(x);
 
-        document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
+        // document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
     }
     else{
       listcheck.className += " disabled";
-      document.getElementsByClassName("button")[0].className += " disabled";
+      // document.getElementsByClassName("button")[0].className += " disabled";
     }
 
     listobj.appendChild(listcheck);
@@ -140,6 +148,7 @@ $(document).ready(function(){
     }
 
   }
+
   function clear(targ){
     targ.innerHTML = "";
   }
@@ -180,13 +189,15 @@ $(document).ready(function(){
   loadData();
 
   $(".button").click(function(){
-    var newobj = {
-      name : document.getElementsByClassName("input-agenda-item")[0].value,
-      checked : false
-    };
-    listdata.push(newobj);
+    if(cal.selected.getTime() >= cal.current.getTime()){
+      var newobj = {
+        name : document.getElementsByClassName("input-agenda-item")[0].value,
+        checked : false
+      };
+      listdata.push(newobj);
 
-    updateData(listdata);
+      updateData(listdata);
+    }else{}
 
   });
 
