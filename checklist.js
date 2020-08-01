@@ -166,6 +166,7 @@ $(document).ready(function(){
         x.className = "widget-x";
 
         x.onclick = function(){
+
           arr.splice(i,1);
           updateData(listdata);
         };
