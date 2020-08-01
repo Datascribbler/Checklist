@@ -1,8 +1,11 @@
 $(document).ready(function(){
 
-  var angle = {current:0, lock:70}
+  var angle = {current:0, lock:70};
+  var placeholder;
 
   let sketch = function(p) {
+    angle.placeholder = p;
+    console.log(placeholder);
     p.setup = function(){
       p.createCanvas(170, 170);
       p.background(255);
@@ -16,6 +19,9 @@ $(document).ready(function(){
         angle.current--;
         document.getElementById("display-number").innerHTML = angle.current + "%";
       }
+      else{
+        p.noLoop();
+      }
       p.smooth();
       p.background(255);
       p.circle(p.width/2,p.height/2,160);
@@ -23,12 +29,11 @@ $(document).ready(function(){
       p.arc(p.width/2,p.height/2,160,160,-6.28319/4,6.28319*(angle.current/100)-6.28319/4);
       p.fill(255);
       p.circle(p.width/2,p.height/2, 120);
-
-
     }
+
   };
   new p5(sketch, 'display');
-
+  console.log(placeholder);
   var listdata;
 
   class calendar {
@@ -161,6 +166,7 @@ $(document).ready(function(){
         console.log(this.responseText);
         listdata = JSON.parse(this.responseText);
         angle.lock = render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
+        angle.placeholder.loop();
       }
     };
 
@@ -178,6 +184,7 @@ $(document).ready(function(){
         listdata = JSON.parse(this.responseText);
         console.log(listdata);
         angle.lock = render(listdata, document.getElementsByClassName("container-scrollbox")[0]);
+        angle.placeholder.loop();
         console.log(cal.location);
       }
     };
