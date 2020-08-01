@@ -1,11 +1,10 @@
 $(document).ready(function(){
 
   var angle = {current:0, lock:70};
-  var placeholder;
 
   let sketch = function(p) {
     angle.placeholder = p;
-    console.log(placeholder);
+
     p.setup = function(){
       p.createCanvas(170, 170);
       p.background(255);
@@ -33,7 +32,6 @@ $(document).ready(function(){
 
   };
   new p5(sketch, 'display');
-  console.log(placeholder);
   var listdata;
 
   class calendar {
