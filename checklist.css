@@ -55,7 +55,7 @@
   font-family: Helvetica-bold;
   font-size:15pt;
   border-bottom: 2pt solid black;
-  width:calc(100% - 185pt);
+  width:calc(100% - 195pt);
 }
 .container-scrollbox{
   margin-top: 50pt;
@@ -147,7 +147,7 @@
   height: 100%;
   right:0pt;
   top:0pt;
-  z-index: -1;
+  z-index: 1;
 }
 .container-calendar-disp{
   position: fixed;
