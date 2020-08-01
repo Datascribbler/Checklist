@@ -147,7 +147,7 @@
   height: 100%;
   right:0pt;
   top:0pt;
-  z-index: 1;
+  z-index: 0;
 }
 .container-calendar-disp{
   position: fixed;
@@ -157,6 +157,7 @@
   top:10%;
   background-color: #ffffff;
   border:1pt solid black;
+  z-index: 1;
 }
 .container-calendar-bounder{
   position: absolute;
