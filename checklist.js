@@ -56,7 +56,7 @@ $(document).ready(function(){
 
       this.getMonthLength = function(){
         var shadowmonth = new Date();
-        shadowmonth.setMonth(this.selected.getMonth() + 1, 0);
+        shadowmonth.setMonth(this.viewed.getMonth() + 1, 0);
         return shadowmonth.getDate();
       }
 
