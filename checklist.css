@@ -44,6 +44,7 @@
   text-align: center;
   font-size: 30pt;
   padding-top: 2pt;
+  z-index: 2;
 }
 .widget-input{
   position: fixed;
@@ -88,6 +89,16 @@
   margin-top:0pt;
   float: right;
 }
+.widget-x-large{
+    position: absolute;
+    height: 20pt;
+    width:20pt;
+    background-image: url("x-widget-02.png");
+    background-size: 100% 100%;
+    background-position: 50% 50%;
+    right: 10pt;
+    top:15pt;
+}
 .text-checked{
   text-decoration: line-through;
 }
@@ -97,22 +108,23 @@
 }
 
 .container-calendar{
-  position: fixed;
+  margin: auto;
   right:30pt;
+  width:209pt;
   top:-30pt;
-  font-family: Helvetica-condensed;
   font-weight: bold;
 
 }
-#year{
+.year{
+  font-family: Helvetica-condensed;
   font-size: 50pt;
+  text-align: center;
 }
 .date{
   margin-top: -4em;
   font-family: Helvetica-extended;
   font-size: 23pt;
   text-align: center;
-  margin-left: -29pt;
 }
 .arrow{
   height: 20pt;
@@ -122,15 +134,75 @@
   background-position: 100% 100%;
   position: relative;
   float: left;
-  margin-top: -50pt;
+  margin-top: -64pt;
+}
+.icon-button{
+  height: 25pt;
+  width:25pt;
+}
+.container-dashboard{
+  position: fixed;
+  width: 200pt;
+  height: 100%;
+  right:0pt;
+  top:0pt;
+}
+.container-calendar-disp{
+  position: fixed;
+  height: 80%;
+  width:90%;
+  left:5%;
+  top:10%;
+  background-color: #ffffff;
+  border:1pt solid black;
+}
+.container-calendar-bounder{
+  position: absolute;
+  height: 200pt;
+  width:400pt;
+  left: calc(50% - 200pt);
+  top: calc(50% - 100pt);
+}
+.dayblock{
+  position: relative;
+  float:left;
+  height: 25pt;
+  width:40pt;
+  background-color: #000000;
+  color:#ffffff;
+  font-family: Helvetica;
+  font-size: 15pt;
+  padding-top:12.5pt;
+  text-align: center;
+
+  border-radius: 3pt;
+  margin-left:7pt;
+  margin-right:7pt;
+  margin-top: 10pt;
+}
+.date-grid-selected{
+  background-color: #ffffff;
+  border:4pt solid #000000;
+  height: 21pt;
+  width: 32pt;
+  padding-top: 8.5pt;
+  color: #000000;
+  font-family: Helvetica-bold;
+}
+#button-calendar{
+  position: relative;
+  top: -109pt;
+  left:157pt;
+  float: left;
 }
 
-#arrowl{
+.arrowl{
   -webkit-transform:rotate(180deg);
-  margin-left: -25pt;
+  float:right;
+  margin-right: 160pt;
 }
-#arrowr{
-  margin-left: 111pt;
+.arrowr{
+  margin-left: 160pt;
 }
 
 #display{

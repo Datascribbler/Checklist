@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+
   var angle = {current:0, lock:70};
 
   let sketch = function(p) {
@@ -41,10 +42,23 @@ $(document).ready(function(){
       this.current = new Date();
       this.selected = new Date();
 
-      this.increment = function(int){
-        this.selected.setDate( this.selected.getDate() + int );
-        this.render();
-      };
+      self = this;
+
+      this.increment = {
+        day: function(int){
+          self.selected.setDate( self.selected.getDate() + int );
+        },
+        month: function(int){
+          self.selected.setMonth( self.selected.getMonth() + int );
+        }
+
+      },
+
+      this.getMonthLength = function(){
+        var shadowmonth = new Date();
+        shadowmonth.setMonth(this.selected.getMonth() + 1, 0);
+        return shadowmonth.getDate();
+      }
 
       this.render = function(){
         document.getElementById("year").innerHTML = this.selected.getFullYear();
@@ -52,13 +66,36 @@ $(document).ready(function(){
         document.getElementById("day").innerHTML = convertToDoubleDigit(this.selected.getDate());
 
         if(cal.selected.getTime()>=cal.current.getTime()){
-          document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
+          document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className = document.getElementsByClassName("button")[0].className.replace(" disabled","");
         }
         else{
           document.getElementsByClassName("button")[0].className += " disabled";
         }
 
         this.location = this.selected.getDate()+"-"+this.selected.getMonth()+"-"+this.selected.getFullYear()+".json";
+      };
+
+      this.generateMonthGrid = function(targ){
+        var objport = this;
+
+        clear($(".container-calendar-bounder")[0]);
+        for(let i = 0; i < this.getMonthLength(); i++){
+          var dayblock = document.createElement("DIV");
+          dayblock.className = "dayblock";
+          dayblock.innerHTML = i+1;
+
+
+          dayblock.onclick = function(){
+            $(".date-grid-selected")[0].className = $(".date-grid-selected")[0].className.replace("date-grid-selected","");
+            $(".dayblock")[i].className += " date-grid-selected";
+            objport.selected.setDate(i+1);
+            objport.render();
+            loadData(document.getElementsByClassName("container-scrollbox")[0]);
+          };
+
+          $(".container-calendar-bounder")[0].appendChild(dayblock);
+        }
+        document.getElementsByClassName("dayblock")[this.selected.getDate() - 1].className += " date-grid-selected";
       };
 
       this.location = this.selected.getDate()+"-"+(this.selected.getMonth()+1)+"-"+this.selected.getFullYear()+".json";
@@ -76,8 +113,6 @@ $(document).ready(function(){
       return num;
     }
   }
-
-
 
   function render(arr, targ){
     var checkedcount = 0;
@@ -207,12 +242,25 @@ $(document).ready(function(){
   });
 
   $("#arrowl").click(function(){
-    cal.increment(-1);
+    cal.increment.day(-1);
+    cal.render();
     loadData(document.getElementsByClassName("container-scrollbox")[0]);
   });
 
   $("#arrowr").click(function(){
-    cal.increment(1);
+    cal.increment.day(1);
+    cal.render();
     loadData(document.getElementsByClassName("container-scrollbox")[0]);
+  });
+
+  $(".container-calendar-disp").hide();
+
+  $("#button-calendar").click(function(){
+    cal.generateMonthGrid(document.getElementById("calendar-disp"));
+    $(".container-calendar-disp").fadeIn(500);
+  });
+
+  $(".close-pane").click(function(){
+    $(this).parent().fadeOut(500);
   });
 });
